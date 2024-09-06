@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services Selector</title>
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .service {
+            background-color: #ecf0f1;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const questions = [
+            {
+                id: 'gtm_strategy',
+                question: 'How would you describe your current go-to-market strategy?',
+                options: ['Primarily offline', 'Mix of online and offline', 'Primarily online', 'Not sure'],
+            },
+            {
+                id: 'data_state',
+                question: 'How would you describe the current state of your data?',
+                options: ['Highly siloed', 'Partially integrated', 'Fully integrated', 'Not sure'],
+            },
+            // Add more questions here based on your document
+        ];
+
+        const services = {
+            'FutureProof Strategy': 'Our comprehensive approach to strategic planning and forecasting.',
+            'ActionTrack Analytics': 'Ongoing analytics support for implementing and optimizing your strategy.',
+            'RapidInsight Analysis': 'Quick, focused insights on specific challenges.',
+            'StakeholderSync Briefings': 'Effective communication of insights to any internal audience.',
+            'AI Analytics Roadmap': 'Your strategic compass for navigating AI-powered analytics.',
+            'AI Analytics Coaching': 'Step-by-step guidance to implement AI Analytics.',
+        };
+
+        function App() {
+            const [currentQuestion, setCurrentQuestion] = React.useState(0);
+            const [answers, setAnswers] = React.useState({});
+            const [results, setResults] = React.useState(null);
+
+            const handleAnswer = (answer) => {
+                setAnswers({ ...answers, [questions[currentQuestion].id]: answer });
+                if (currentQuestion < questions.length - 1) {
+                    setCurrentQuestion(currentQuestion + 1);
+                } else {
+                    generateResults();
+                }
+            };
+
+            const generateResults = () => {
+                // This is a placeholder function. Replace with your actual logic based on the flowchart.
+                const recommendedServices = Object.keys(services).filter(() => Math.random() > 0.5);
+                setResults(recommendedServices);
+            };
+
+            if (results) {
+                return (
+                    <div>
+                        <h1>Your Recommended Services</h1>
+                        {results.map(service => (
+                            <div key={service} className="service">
+                                <h2>{service}</h2>
+                                <p>{services[service]}</p>
+                            </div>
+                        ))}
+                    </div>
+                );
+            }
+
+            return (
+                <div>
+                    <h1>{questions[currentQuestion].question}</h1>
+                    <div className="question">
+                        {questions[currentQuestion].options.map(option => (
+                            <button key={option} onClick={() => handleAnswer(option)}>
+                                {option}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>
